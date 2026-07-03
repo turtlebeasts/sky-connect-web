@@ -7,6 +7,7 @@ import EditProfileModal from "../../../features/profile/components/EditProfileMo
 import CommentsModal from "../../../features/comments/components/CommentsModal/CommentsModal";
 import EditCommentModal from "../../../features/comments/components/EditCommentModal/EditCommentModal";
 import DeleteCommentModal from "../../../features/comments/components/DeleteCommentModal/DeleteCommentModal";
+import DeletePostModal from "../../../features/posts/components/DeletePostModal/DeletePostModal";
 
 function ModalProvider() {
   const { modal } = useModalStore();
@@ -21,13 +22,10 @@ function ModalProvider() {
       return <EditPostModal />;
 
     case "delete-post":
-      return <ConfirmationModal />;
+      return <DeletePostModal />;
 
     case "edit-profile":
       return <EditProfileModal />;
-
-    case "comments":
-      return <CommentsModal />;
 
     case "comments":
       return <CommentsModal />;
