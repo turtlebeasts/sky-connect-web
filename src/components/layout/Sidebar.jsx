@@ -14,16 +14,16 @@ const navItems = [
     path: "/search",
     icon: Search,
   },
-  {
-    label: "Explore",
-    path: "/explore",
-    icon: Compass,
-  },
-  {
-    label: "Messages",
-    path: "/messages",
-    icon: MessageCircle,
-  },
+  // {
+  //   label: "Explore",
+  //   path: "/explore",
+  //   icon: Compass,
+  // },
+  // {
+  //   label: "Messages",
+  //   path: "/messages",
+  //   icon: MessageCircle,
+  // },
 ];
 
 function Sidebar() {
