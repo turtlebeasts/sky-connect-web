@@ -10,6 +10,7 @@ import SearchPage from "../features/search/pages/SearchPage";
 import MainLayout from "../components/layout/MainLayout";
 
 import useAuthStore from "../features/auth/store/auth.store";
+import MessagesPage from "../features/messages/pages/MessagesPage";
 
 function ProtectedRoute({ children }) {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "profile/:username",
         element: <ProfilePage />,
+      },
+      {
+        path: "messages",
+        element: <MessagesPage />,
       },
     ],
   },

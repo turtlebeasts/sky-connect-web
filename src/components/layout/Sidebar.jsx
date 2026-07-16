@@ -1,4 +1,4 @@
-import { Compass, Home, MessageCircle, Search, User } from "lucide-react";
+import { Home, MessageCircle, Search, User } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 import useAuthStore from "../../features/auth/store/auth.store";
@@ -14,15 +14,15 @@ const navItems = [
     path: "/search",
     icon: Search,
   },
+  {
+    label: "Messages",
+    path: "/messages",
+    icon: MessageCircle,
+  },
   // {
   //   label: "Explore",
   //   path: "/explore",
   //   icon: Compass,
-  // },
-  // {
-  //   label: "Messages",
-  //   path: "/messages",
-  //   icon: MessageCircle,
   // },
 ];
 

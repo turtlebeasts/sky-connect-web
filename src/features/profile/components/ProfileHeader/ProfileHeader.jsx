@@ -1,15 +1,40 @@
 import { FiEdit2 } from "react-icons/fi";
+import { MessageCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import useAuthStore from "../../../auth/store/auth.store";
 import useModalStore from "../../../../stores/useModalStore";
+import useMessagingStore from "../../../messages/store/messaging.store";
 
 import FollowButton from "../../../follow/components/FollowButton";
 
 function ProfileHeader({ profile }) {
+  const navigate = useNavigate();
+
   const user = useAuthStore((state) => state.user);
+
   const openModal = useModalStore((state) => state.openModal);
 
+  const { createConversation, setActiveConversation, fetchMessages } =
+    useMessagingStore();
+
   const isOwner = user?.id === profile?._id;
+
+  const handleMessage = async () => {
+    const result = await createConversation(profile._id);
+
+    if (!result.success) {
+      toast.error(result.message);
+      return;
+    }
+
+    setActiveConversation(result.conversation);
+
+    await fetchMessages(result.conversation._id);
+
+    navigate("/messages");
+  };
 
   return (
     <section className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
@@ -39,7 +64,7 @@ function ProfileHeader({ profile }) {
             </div>
           </div>
 
-          <div className="mt-6 md:mt-0">
+          <div className="mt-6 flex gap-3 md:mt-0">
             {isOwner ? (
               <button
                 onClick={() => openModal("edit-profile", profile)}
@@ -49,7 +74,17 @@ function ProfileHeader({ profile }) {
                 Edit Profile
               </button>
             ) : (
-              <FollowButton username={profile.username} />
+              <>
+                <FollowButton username={profile.username} />
+
+                <button
+                  onClick={handleMessage}
+                  className="flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-800 px-5 py-3 font-medium text-white transition hover:border-sky-500 hover:bg-zinc-700"
+                >
+                  <MessageCircle size={18} />
+                  Message
+                </button>
+              </>
             )}
           </div>
         </div>
