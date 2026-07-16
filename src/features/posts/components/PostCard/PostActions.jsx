@@ -1,4 +1,4 @@
-import { FaHeart, FaRegComment, FaRegHeart } from "react-icons/fa";
+import { FaHeart, FaRegComment, FaRegHeart } from "react-icons/fa6";
 
 import usePostsStore from "../../store/posts.store";
 import useAuthStore from "../../../auth/store/auth.store";
@@ -7,41 +7,61 @@ import useModalStore from "../../../../stores/useModalStore";
 function PostActions({ post }) {
   const user = useAuthStore((state) => state.user);
 
-  const like = usePostsStore((state) => state.likePost);
-  const unlike = usePostsStore((state) => state.unlikePost);
+  const likePost = usePostsStore((state) => state.likePost);
+  const unlikePost = usePostsStore((state) => state.unlikePost);
+
+  const openModal = useModalStore((state) => state.openModal);
 
   const isLiked = post.likes.some((id) => id === user?._id || id === user?.id);
-  const openModal = useModalStore((state) => state.openModal);
 
   const handleLike = async () => {
     if (isLiked) {
-      await unlike(post._id);
+      await unlikePost(post._id);
     } else {
-      await like(post._id);
+      await likePost(post._id);
     }
   };
 
   return (
-    <div className="flex items-center gap-5">
-      <button
-        onClick={handleLike}
-        className="transition hover:scale-110 active:scale-95"
-      >
-        {isLiked ? (
-          <FaHeart size={24} className="text-red-500" />
-        ) : (
-          <FaRegHeart size={24} className="text-white" />
-        )}
-      </button>
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-6">
+        {/* Like */}
+        <button
+          onClick={handleLike}
+          className="group flex items-center gap-2 transition"
+        >
+          {isLiked ? (
+            <FaHeart
+              size={24}
+              className="text-red-500 transition-transform duration-200 group-hover:scale-125"
+            />
+          ) : (
+            <FaRegHeart
+              size={24}
+              className="transition-transform duration-200 group-hover:scale-125"
+            />
+          )}
 
-      <button
-        onClick={() => openModal("comments", post)}
-        className="transition hover:scale-110 active:scale-95"
-      >
-        <FaRegComment size={23} className="text-white" />
-      </button>
+          <span className="text-sm font-medium text-zinc-300">
+            {post.likes.length}
+          </span>
+        </button>
 
-      <span className="text-sm text-zinc-400">{post.likes.length} likes</span>
+        {/* Comments */}
+        <button
+          onClick={() => openModal("comments", post)}
+          className="group flex items-center gap-2 transition"
+        >
+          <FaRegComment
+            size={23}
+            className="transition-transform duration-200 group-hover:scale-125"
+          />
+
+          <span className="text-sm font-medium text-zinc-300">
+            {post.commentsCount ?? post.comments?.length ?? 0}
+          </span>
+        </button>
+      </div>
     </div>
   );
 }
