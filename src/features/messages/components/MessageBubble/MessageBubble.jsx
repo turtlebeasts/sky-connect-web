@@ -5,26 +5,47 @@ function MessageBubble({ message }) {
 
   const isMine = message.sender._id === currentUser.id;
 
+  const time = new Date(message.createdAt).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
   return (
     <div className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
-      <div className="max-w-[70%]">
+      <div className="max-w-[85%] sm:max-w-[75%] lg:max-w-[65%]">
         <div
-          className={`rounded-2xl px-4 py-2 ${
-            isMine ? "bg-sky-500 text-white" : "bg-zinc-800 text-white"
+          className={`rounded-3xl px-4 py-3 shadow-md ${
+            isMine
+              ? "rounded-br-lg bg-sky-500 text-white"
+              : "rounded-bl-lg bg-zinc-800 text-white"
           }`}
         >
           {message.image && (
-            <img src={message.image} alt="" className="mb-2 rounded-lg" />
+            <img
+              src={message.image}
+              alt=""
+              className="mb-3 max-h-80 w-full rounded-2xl object-cover"
+            />
           )}
 
-          {message.content && <p>{message.content}</p>}
-        </div>
+          {message.content && (
+            <p className="wrap-break-word whitespace-pre-wrap leading-relaxed">
+              {message.content}
+            </p>
+          )}
 
-        {isMine && (
-          <p className="mt-1 px-2 text-right text-xs text-zinc-500">
-            {message.readAt ? "✓✓ Seen" : "✓ Sent"}
-          </p>
-        )}
+          <div
+            className={`mt-2 flex items-center gap-2 text-[11px] ${
+              isMine
+                ? "justify-end text-sky-100/80"
+                : "justify-end text-zinc-400"
+            }`}
+          >
+            <span>{time}</span>
+
+            {isMine && <span>{message.readAt ? "✓✓ Seen" : "✓ Sent"}</span>}
+          </div>
+        </div>
       </div>
     </div>
   );
