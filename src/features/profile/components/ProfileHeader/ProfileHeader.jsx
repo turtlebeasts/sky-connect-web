@@ -8,6 +8,7 @@ import useModalStore from "../../../../stores/useModalStore";
 import useMessagingStore from "../../../messages/store/messaging.store";
 
 import FollowButton from "../../../follow/components/FollowButton";
+import UserMenu from "../../../../components/common/UserMenu/UserMenu";
 
 function ProfileHeader({ profile }) {
   const navigate = useNavigate();
@@ -19,7 +20,10 @@ function ProfileHeader({ profile }) {
   const { createConversation, setActiveConversation, fetchMessages } =
     useMessagingStore();
 
-  const isOwner = user?.id === profile?._id;
+  const currentUserId = user?._id || user?.id;
+  const profileUserId = profile?._id || profile?.id;
+
+  const isOwner = currentUserId === profileUserId;
 
   const handleMessage = async () => {
     const result = await createConversation(profile._id);
@@ -37,11 +41,15 @@ function ProfileHeader({ profile }) {
   };
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
-      <div className="h-36 bg-linear-to-r from-sky-600 via-cyan-500 to-blue-700" />
+    <section className="relative rounded-2xl border border-zinc-800 bg-zinc-900">
+      {/* Cover */}
+      <div className="overflow-hidden rounded-t-2xl">
+        <div className="h-36 bg-linear-to-r from-sky-600 via-cyan-500 to-blue-700" />
+      </div>
 
       <div className="px-8 pb-8">
         <div className="-mt-16 flex flex-col items-center md:flex-row md:items-end md:justify-between">
+          {/* Left */}
           <div className="flex flex-col items-center md:flex-row md:items-end md:gap-6">
             <img
               src={profile.avatar}
@@ -64,15 +72,23 @@ function ProfileHeader({ profile }) {
             </div>
           </div>
 
-          <div className="mt-6 flex gap-3 md:mt-0">
+          {/* Right */}
+          <div className="mt-6 flex items-center gap-3 md:mt-0">
             {isOwner ? (
-              <button
-                onClick={() => openModal("edit-profile", profile)}
-                className="flex items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-800 px-5 py-3 font-medium text-white transition hover:border-sky-500 hover:bg-zinc-700"
-              >
-                <FiEdit2 size={18} />
-                Edit Profile
-              </button>
+              <>
+                {/* Mobile */}
+                <div className="relative md:hidden">
+                  <UserMenu trigger="menu" profile={profile} />
+                </div>
+
+                {/* Desktop */}
+                <button
+                  onClick={() => openModal("edit-profile", profile)}
+                  className="hidden items-center gap-2 rounded-xl border border-zinc-700 bg-zinc-800 px-5 py-3 font-medium text-white transition hover:border-sky-500 hover:bg-zinc-700 md:flex"
+                >
+                  <FiEdit2 size={18} />
+                </button>
+              </>
             ) : (
               <>
                 <FollowButton username={profile.username} />

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { login, register, getMe } from "../api/auth.api";
+import { login, register, googleLogin, getMe } from "../api/auth.api";
 
 const useAuthStore = create(
   persist(
@@ -95,6 +95,41 @@ const useAuthStore = create(
           isAuthenticated: false,
           error: null,
         });
+      },
+
+      loginWithGoogle: async (googleToken) => {
+        try {
+          set({
+            isLoading: true,
+            error: null,
+          });
+
+          const data = await googleLogin(googleToken);
+
+          set({
+            user: data.user,
+            token: data.token,
+            isAuthenticated: true,
+            isLoading: false,
+          });
+
+          return {
+            success: true,
+          };
+        } catch (error) {
+          const message =
+            error.response?.data?.message || "Google login failed.";
+
+          set({
+            error: message,
+            isLoading: false,
+          });
+
+          return {
+            success: false,
+            message,
+          };
+        }
       },
 
       clearError: () => set({ error: null }),
