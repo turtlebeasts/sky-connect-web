@@ -2,6 +2,7 @@ import { Home, MessageCircle, Search, User, Cloud } from "lucide-react";
 import { NavLink } from "react-router-dom";
 
 import useAuthStore from "../../features/auth/store/auth.store";
+import UserMenu from "../common/UserMenu/UserMenu";
 
 const navItems = [
   {
@@ -27,18 +28,12 @@ function Sidebar() {
   return (
     <aside
       className="
-    hidden
-    lg:flex
-    sticky
-    top-0
-    h-screen
-    w-72
-    flex-col
-    border-r
-    border-zinc-800
-    bg-zinc-950/80
-    backdrop-blur-xl
-  "
+        sticky top-0 hidden h-screen w-72 flex-col
+        border-r border-zinc-800
+        bg-zinc-950/80
+        backdrop-blur-xl
+        lg:flex
+      "
     >
       {/* Logo */}
       <div className="border-b border-zinc-800 p-8">
@@ -106,24 +101,30 @@ function Sidebar() {
       {/* User Card */}
       {user && (
         <div className="border-t border-zinc-800 p-5">
-          <NavLink
-            to={`/profile/${user.username}`}
-            className="flex items-center gap-4 rounded-2xl bg-zinc-900 p-3 transition hover:bg-zinc-800"
-          >
-            <img
-              src={user.avatar}
-              alt={user.displayName}
-              className="h-12 w-12 rounded-full object-cover ring-2 ring-zinc-700"
-            />
+          <div className="flex items-center gap-3 rounded-2xl bg-zinc-900 p-3">
+            <NavLink
+              to={`/profile/${user.username}`}
+              className="flex min-w-0 flex-1 items-center gap-3"
+            >
+              <img
+                src={user.avatar}
+                alt={user.displayName}
+                className="h-12 w-12 rounded-full object-cover ring-2 ring-zinc-700"
+              />
 
-            <div className="min-w-0">
-              <h3 className="truncate font-semibold text-white">
-                {user.displayName}
-              </h3>
+              <div className="min-w-0">
+                <h3 className="truncate font-semibold text-white">
+                  {user.displayName}
+                </h3>
 
-              <p className="truncate text-sm text-zinc-400">@{user.username}</p>
-            </div>
-          </NavLink>
+                <p className="truncate text-sm text-zinc-400">
+                  @{user.username}
+                </p>
+              </div>
+            </NavLink>
+
+            <UserMenu trigger="dots" profile={user} />
+          </div>
         </div>
       )}
     </aside>

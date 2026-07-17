@@ -3,22 +3,23 @@ import { Link } from "react-router-dom";
 
 function LoginPage() {
   return (
-    <main className="min-h-screen bg-zinc-950 flex items-center justify-center px-4">
-      <div className="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-2xl p-8 shadow-xl">
+    <main className="flex min-h-screen items-center justify-center bg-zinc-950 px-4">
+      <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-8 shadow-xl">
         <div className="mb-8 text-center">
           <h1 className="text-4xl font-bold text-white">Sky Connect</h1>
-          <p className="text-zinc-400 mt-2">
+
+          <p className="mt-2 text-zinc-400">
             Connect with friends around the world.
           </p>
         </div>
 
         <LoginForm />
 
-        <p className="text-center text-zinc-400 mt-6">
+        <p className="mt-6 text-center text-zinc-400">
           Don't have an account?{" "}
           <Link
             to="/register"
-            className="text-sky-500 hover:text-sky-400 font-medium"
+            className="font-medium text-sky-500 hover:text-sky-400"
           >
             Register
           </Link>

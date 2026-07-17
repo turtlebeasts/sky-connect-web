@@ -6,7 +6,10 @@ import PostMenu from "./PostMenu";
 function PostHeader({ post }) {
   const user = useAuthStore((state) => state.user);
 
-  const isOwner = user?.id === post.author._id || user?.id === post.author.id;
+  const currentUserId = user?._id || user?.id;
+  const authorId = post.author?._id || post.author?.id;
+
+  const isOwner = currentUserId === authorId;
 
   return (
     <header className="flex items-center justify-between p-4">
